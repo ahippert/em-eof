@@ -21,6 +21,24 @@
 import numpy as np
 from numpy import cos, sin, tanh, pi
 
+def generate_field_time_series(N, grid_func, field_type, nb_of_modes):
+    """ A function that generates a time series of displacement
+    or any geophysical maps.
+    Inputs - N: time series size (temporal dimension)
+           - grid_func: function used to map space, i.e. the circle
+                        function np.sqrt(x**2+y**2). Should be an np.array().
+           - field_type: type of field to model ('linear', 'periodic')
+           - nb_of_modes: if field_type is 'linear', not needed. Otherwise,
+                          number of oscillating frequencies to include in
+                          model.
+    Output - A N-length time series of Px*Py geophysical fields.
+    """
+    if field_type == 'linear':
+        Y = np.array([volcan(grid_func, (t/N)+30/N) for t in range(10,N+10)])
+    elif field_type == 'periodic':
+        Y = np.array([volcan2(grid_func, (t/N)+30/N, nb_of_modes) for t in range(10, N+10)])
+    return Y
+
 def volcan(r, t, r0 = 0, e = 2):
     z = (1 - np.abs(r0-r)/e)*t
     return z*(z>0)

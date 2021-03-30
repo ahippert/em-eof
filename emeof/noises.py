@@ -59,8 +59,36 @@ def gen_noise2(corr, alea, coeff=0.05):
     eps1, eps2 = coeff*np.random.random(), coeff*np.random.random()
     return recentre(inv,eps1,1-eps2)
 
-def gen_noise_series(corr, alea, time):
-    return np.array([gen_noise(corr, alea[i]) for i in range(0, time)])
+def generate_noise_time_series(nt, nx, ny, t_corr, s_corr, noise_type):
+    """ Generate noise time series of multiple types
+    Input:
+      - corr: degree of space correlation
+      - nt: time dimension
+      - nx, ny: size of each field
+      - noise_type: 'scorr' (spatially correlated),
+                    'stcorr'(spatio-temporally correlated)
+                    'white' (white Gaussian noise with mean=0,sig=1)
+    Output:
+      - A nt-length time series of noise fields of size nx*ny
+    """
+
+    # Set mean and sigma and generate white gaussian noise
+    mu, sigma = 0, 1
+    alea = np.random.normal(mu, sigma, (nt, nx, ny))
+
+    # Noise generation
+    if noise_type in ['scorr', 'stcorr']: # Depends on noise_type
+        x, y = np.meshgrid(np.linspace(-1,1,nx), np.linspace(-1,1,ny))
+        rad = np.sqrt(x**2+y**2)
+        geo_noise = geo(rad, t_corr)
+        noise = np.array([gen_noise(geo_noise, alea[i]) for i in range(0, nt)])
+        if noise_type == 'stcorr': # If spatio-temporal, add space correlated noise
+            noise += gen_corr_noise(s_corr,(nt,nx,ny),0)
+    elif noise_type == 'white':
+        noise = alea
+    else:
+        print("Not a valid type of noise")
+    return noise
 
 def gen_noise_series1(corr, alea, time):
     return np.array([gen_noise_1D(corr, alea[i]) for i in range(0, time)])
@@ -91,7 +119,7 @@ def gen_corr_noise(r, shape, corr):
     L = np.linalg.cholesky(R)
     x = np.random.normal(0, 0.1, (shape[0],shape[1]*shape[2]))
     y = np.dot(L, x)
-    return np.reshape(y,shape) #y.T 
+    return np.reshape(y,shape) #y.T
 
 def gen_covariance_matrix(m, corcoef):
     """Generates covariance matrix for a given

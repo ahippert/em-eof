@@ -1,5 +1,13 @@
-# Example Package
+# The emeof package
 
-This is a simple example package. You can use
-[Github-flavored Markdown](https://guides.github.com/features/mastering-markdown/)
-to write your content.
+Interpolation of geophysical/displacement fields as described in:
+
+[_EM-EOF: gap-flling in incomplete SAR displacement time series._](https://ieeexplore.ieee.org/abstract/document/9170898)
+<br/>
+Hippert-Ferrer A., Yan Y., Bolon P. 
+<br/>
+`IEEE Transactions on Geoscience and Remote Sensing`, **2020**.
+<br/>
+\[<a href="ahippert.github.io/pdfs/tgrs_2020.pdf" target="_blank">PDF</a>\] \[<a href="https://github.com/ahippert/em-eof" target="_blank">Code</a>\]
+
+To play with code, open emeof/main.py and run it from command line or Python IDE.
