@@ -24,18 +24,22 @@ def plot_time_series(X_truth, X_noise, X_reco, X_gaps, px, py):
     c = X_noise[:,px,py]
     for i in range(len(X_reco)):
         allEOFs[:,i] = X_reco[i][:,px,py]
-    plt.plot(a)
-    plt.plot(b, 'k')
-    plt.plot(c, 'k--')
+    plt.title("Time series of reconstructed field versus true field")
+    plt.plot(a, label='true')
+    plt.plot(c, 'k--', label='true+noise')
+    plt.plot(b, 'k', label='true+noise+gaps')
     for i in range(len(X_reco)):
-        plt.plot(allEOFs[:,i])
+        plt.plot(allEOFs[:,i], label='reconstructed')
+    plt.xlabel('Time')
+    plt.ylabel('Relative amplitude')
+    plt.legend()
 
-def plot_field(X_truth, X_reco, X_gaps, noise, ind):
+def plot_field(X_truth, X_reco, X_gaps, noise, ind, k, percent, snr, field_type):
     """Plot field at ind position in the time series
     """
     img = [ind]
     cmaps = ['RdGy', 'inferno', 'viridis', 'seismic']
-    ax2title = ['Residuals', 'Noise']
+    axtitle = ['true+noise+gaps', 'reconstructed']
     cm = 1
     row1, col1 = 1, 5
     for k in range(len(X_reco)):
@@ -52,30 +56,34 @@ def plot_field(X_truth, X_reco, X_gaps, noise, ind):
         for i in img :
             j=1
             fig, axs = plt.subplots(nrows=row1, ncols=col1, figsize=(17, 6))
-            #fig.suptitle('%d EOF - %d%% gaps - SNR=%0.02f' %(k+1, percent, sn_ratio[0]), fontsize = 16)
+            fig.suptitle('Reconstructed field at t=%d (out of %d) \n Type: %s \n %d EOF - %d%% gaps - SNR=%0.02f' %(ind, X_truth.shape[0], field_type, k+1, percent, snr), fontsize=16)
 
             im1 = axs.flat[0].imshow(mat1[0][i], vmin=min1, vmax=max1, cmap = cmaps[cm])
             axs.flat[0].axis('off')
+            axs.flat[0].set_title('true')
             fig.subplots_adjust(right=0.8, wspace=0.1)
 
             for ax in axs.flat[1:3]:
                 im = ax.imshow(mat1[j][i].T, vmin=min1, vmax=max1, cmap = cmaps[cm])
                 ax.axis('off')
                 ax.get_yaxis().set_visible(False)
+                ax.set_title(axtitle[j-1])
                 j+=1
                 fig.subplots_adjust(right=0.8, wspace=0.1)
             cb_ax = fig.add_axes([0.15, 0.15, 0.35, 0.05])
             cbar = fig.colorbar(im, cax=cb_ax, orientation='horizontal')
 
-            im1 = axs.flat[3].imshow(mat1[3][i].T, vmin=min2, vmax=max2, cmap = cmaps[cm])
+            im2 = axs.flat[3].imshow(mat1[3][i].T, vmin=min2, vmax=max2, cmap = cmaps[cm])
             axs.flat[3].axis('off')
             axs.flat[3].get_yaxis().set_visible(False)
+            axs.flat[3].set_title('residuals')
             cb_ax1 = fig.add_axes([0.56, 0.15, 0.2, 0.05])
-            cbar = fig.colorbar(im1, cax=cb_ax1, orientation='horizontal')
+            cbar = fig.colorbar(im2, cax=cb_ax1, orientation='horizontal')
 
-            im2 = axs.flat[4].imshow(mat1[4][i], vmin=min2, vmax=max2, cmap = cmaps[cm])
+            im3 = axs.flat[4].imshow(mat1[4][i], vmin=min2, vmax=max2, cmap = cmaps[cm])
             axs.flat[4].axis('off')
             axs.flat[4].get_yaxis().set_visible(False)
+            axs.flat[4].set_title('noise')
 
 # Energy bar plots
 
