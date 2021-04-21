@@ -1,3 +1,4 @@
+
 # The emeof package
 
 Interpolation of geophysical/displacement fields as described in:
@@ -10,4 +11,18 @@ Hippert-Ferrer A., Yan Y., Bolon P.
 <br/>
 \[<a href="ahippert.github.io/pdfs/tgrs_2020.pdf" target="_blank">PDF</a>\] \[<a href="https://github.com/ahippert/em-eof" target="_blank">Code</a>\]
 
-To play with code, open emeof/main.py and run it from command line or Python IDE.
+## Download
+You can `git clone` this or directly download the ZIP file under the **Code** button.
+
+`$ git clone https://github.com/ahippert/em-eof`
+
+## Test the code
+You will need to install the `pytest` package facility first.
+To run the tests, go under the parent directory and run:
+
+`$ pytest --pyargs emeof`
+
+This should plot simulated displacement fields and their reconstruction. Some of these plots were used in (Hippert-Ferrer et al., 2020).
+
+## Modify and play with code
+To play with code, open emeof/main.py and run it from your command line or Python IDE.
