@@ -24,5 +24,7 @@ To run the tests, go under the parent directory and run:
 
 This should plot simulated displacement fields and their reconstruction. Some of these plots were used in (Hippert-Ferrer et al., 2020).
 
-## Modify and play with code
-To play with code, open emeof/main.py and run it from your command line or Python IDE.
+## Play with code
+Open emeof/main.py and run it from the command line or your favorite IDE. The use of the [_Python Debugger_](https://docs.python.org/3/library/pdb.html) is recommanded, as for example:
+
+`$ python -m pdb main.py`
